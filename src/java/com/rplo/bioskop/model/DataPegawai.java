@@ -31,6 +31,8 @@ public class DataPegawai {
     private String mEmailPegawai;
     private String mNomorTelepon;
     private String mRolePegawai;
+    
+    private static JdbcTemplate jdbcTemplate = new JdbcTemplate(DatabaseConnection.getmDataSource());
 
     /**
      * 1 : OPERATOR 2 : ADMIN
@@ -117,10 +119,10 @@ public class DataPegawai {
     }
 
     public static void simpanData(DataPegawai pPegawai) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        String sql = "INSERT INTO pegawai_bioskop VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO pegawai VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(sql,
                 new Object[]{
@@ -138,24 +140,24 @@ public class DataPegawai {
     }
 
     public static List<DataPegawai> getDataList() {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
         List<DataPegawai> pegawaiList = new ArrayList<DataPegawai>();
 
-        String sql = "SELECT * FROM pegawai_bioskop";
+        String sql = "SELECT * FROM pegawai";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         pegawaiList = jdbcTemplate.query(sql, new PegawaiRowMapper());
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
         return pegawaiList;
     }
 
     public static List<DataPegawai> getDataListByUsername(String pUsername) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
         List<DataPegawai> pegawaiList = new ArrayList<DataPegawai>();
 
-        String sql = "SELECT * FROM pegawai_bioskop WHERE username_pegawai = '" + pUsername + "'";
+        String sql = "SELECT * FROM pegawai WHERE username_pegawai = '" + pUsername + "'";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         pegawaiList = jdbcTemplate.query(sql, new PegawaiRowMapper());
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
         return pegawaiList;
@@ -172,12 +174,12 @@ public class DataPegawai {
      * as PEGAWAI accepted; 3 - login as ADMIN accepted;
      */
     public static int validateLoginCredential(String pUsername, String pPassword, String pRole) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
         List<DataPegawai> pegawaiList = new ArrayList<DataPegawai>();
 
-        String sql = "SELECT * FROM pegawai_bioskop WHERE username_pegawai = ?";
+        String sql = "SELECT * FROM pegawai WHERE username_pegawai = ?";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         pegawaiList = jdbcTemplate.query(sql, new PegawaiRowMapper(), pUsername.toUpperCase());
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
 
@@ -205,7 +207,7 @@ public class DataPegawai {
     }
 
     public static void updateData(DataPegawai pPegawai) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
 
         String sql = "UPDATE pegawai SET "
                 + "username_pegawai = ?, "
@@ -217,7 +219,7 @@ public class DataPegawai {
                 + "no_telp_pegawai = ?, "
                 + "role_pegawai = ? "
                 + "WHERE kode_pegawai = ?";
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(sql,
                 new Object[]{
@@ -235,10 +237,10 @@ public class DataPegawai {
     }
 
     public static void deleteData(String pKodePegawai) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
 
         String sql = "DELETE FROM pegawai WHERE kode_pegawai = ?";
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update(sql, 
                 new Object[]{pKodePegawai});
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());

@@ -23,6 +23,8 @@ public class StudioBioskop {
 
     private String mKodeStudio;
     private String mNamaStudio;
+    
+    private static JdbcTemplate jdbcTemplate = new JdbcTemplate(DatabaseConnection.getmDataSource());
 
     public StudioBioskop() {
     }
@@ -44,10 +46,10 @@ public class StudioBioskop {
     }
 
     public static void simpanData(StudioBioskop pStudioBioskop) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        String sql = "INSERT INTO studio_bioskop VALUES(?, ?)";
+        String sql = "INSERT INTO studio VALUES(?, ?)";
 
         jdbcTemplate.update(sql,
                 new Object[]{
@@ -57,12 +59,12 @@ public class StudioBioskop {
     }
 
     public static List<StudioBioskop> getDataList() {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
         List pegawaiList = new ArrayList();
 
-        String sql = "SELECT * FROM studio_bioskop";
+        String sql = "SELECT * FROM studio";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         pegawaiList = jdbcTemplate.query(sql, new StudioBioskopRowMapper());
         return pegawaiList;
     }

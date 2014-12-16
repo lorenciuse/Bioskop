@@ -4,6 +4,7 @@
     Author     : Lorencius
 --%>
 
+<%@page import="java.util.List"%>
 <%@page import="com.rplo.bioskop.model.Member"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -245,7 +246,8 @@
                                         [
                                             {type: 'empty', prompt: 'Masukkan Username'},
             <%
-                for (int i = 0; i < Member.getDataList().size(); i++) {
+            List<Member> memberList = Member.getDataList();
+                for (int i = 0; i < memberList.size(); i++) {
             %>
                                             {type: 'not[<%=Member.getDataList().get(i).getmUsernameMember()%>]', prompt: 'Username telah digunakan'},
             <%

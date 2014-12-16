@@ -33,6 +33,8 @@ public class Member {
     private String mNomorTelepon;
     private String mTempatLahir;
     private int mSaldo;
+    
+    private static JdbcTemplate jdbcTemplate = new JdbcTemplate(DatabaseConnection.getmDataSource());
 
     public Member() {
     }
@@ -135,12 +137,12 @@ public class Member {
      * as MEMBER accepted;
      */
     public static int validateLoginCredential(String pUsername, String pPassword) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
         List<Member> memberList = new ArrayList<Member>();
 
-        String sql = "SELECT * FROM member_bioskop WHERE username_member = \'" + pUsername + "\'";
+        String sql = "SELECT * FROM member WHERE username_member = \'" + pUsername + "\'";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        ////JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         memberList = jdbcTemplate.query(sql, new MemberRowMapper());
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
 
@@ -161,10 +163,10 @@ public class Member {
     }
 
     public static void simpanData(Member pMember) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
+        ////JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        String sql = "INSERT INTO member_bioskop VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO member VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(sql,
                 new Object[]{
@@ -184,33 +186,33 @@ public class Member {
     }
 
     public static List<Member> getDataList() {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
         List memberList = new ArrayList();
 
-        String sql = "SELECT * FROM member_bioskop";
+        String sql = "SELECT * FROM member";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        ////JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         memberList = jdbcTemplate.query(sql, new MemberRowMapper());
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
         return memberList;
     }
 
     public static List<Member> getDataListbyUser(String user) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
         List memberList = new ArrayList();
 
-        String sql = "SELECT * FROM member_bioskop WHERE username_member = \'" + user + "\'";
+        String sql = "SELECT * FROM member WHERE username_member = \'" + user + "\'";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        ////JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         memberList = jdbcTemplate.query(sql, new MemberRowMapper());
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
         return memberList;
     }
 
     public static void updateData(Member pMember) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
 
-        String sql = "UPDATE member_bioskop SET "
+        String sql = "UPDATE member SET "
                 + "password_member = ?, "
                 + "nama_member = ?, "
                 + "tgl_member = ?, "
@@ -219,7 +221,7 @@ public class Member {
                 + "no_telp_member = ?, "
                 + "tl_member = ? "
                 + "WHERE kode_member = ?";
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        ////JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(sql,
                 new Object[]{
@@ -236,12 +238,12 @@ public class Member {
     }
 
     public static void updateSaldo(Member pMember) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
 
-        String sql = "UPDATE member_bioskop SET "
+        String sql = "UPDATE member SET "
                 + "saldo_member = ? "
                 + "WHERE kode_member = ?";
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        ////JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         jdbcTemplate.update(sql,
                 new Object[]{
@@ -252,10 +254,10 @@ public class Member {
     }
 
     public static boolean isUsernameExist(String pUsername) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
 
         String sql = "SELECT USERNAME_MEMBER FROM MEMBER_BIOSKOP WHERE USERNAME_MEMBER = ?";
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        ////JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         try {
             jdbcTemplate.queryForObject(sql, String.class, pUsername);
             return true;
@@ -288,22 +290,22 @@ public class Member {
             member.setmAlamatMember(rs.getString(6));
             member.setmEmail(rs.getString(7));
             member.setmNomorTelepon(rs.getString(8));
-            member.setmSaldo(rs.getInt(9));
-            member.setmTempatLahir(rs.getString(10));
+            member.setmTempatLahir(rs.getString(9));
+            member.setmSaldo(rs.getInt(10));            
             member.setmGender(rs.getString(11));
 
             return member;
         }
     }
-        
-        public static String cariIdTerakhir(){
-            String id;
-            DataSource dataSource = DatabaseConnection.getmDataSource();
-            
-            String sql = "select TO_CHAR((count(*)+1), 'FM009') AS terakhir from member_bioskop";
-            JdbcTemplate jdbc = new JdbcTemplate(dataSource);
-            id = jdbc.queryForObject(sql, String.class).toString();
-            JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
-            return id;
-        }
+
+    public static String cariIdTerakhir() {
+        String id;
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
+
+        String sql = "select TO_CHAR((count(*)+1), 'FM009') AS terakhir from member";
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        id = jdbcTemplate.queryForObject(sql, String.class).toString();
+        JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
+        return id;
+    }
 }

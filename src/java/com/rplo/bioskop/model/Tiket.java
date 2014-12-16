@@ -72,7 +72,7 @@ public class Tiket {
         DataSource dataSource = DatabaseConnection.getmDataSource();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        String sql = "INSERT INTO tiket_bioskop VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tiket VALUES(?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(sql,
                 new Object[]{
@@ -120,15 +120,15 @@ public class Tiket {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         String sql = "select sum(total) "
-                + "from (select tiket_bioskop.kode_film, film_bioskop.judul_film, "
-                + "count(tiket_bioskop.kode_film) as total, tiket_bioskop.tanggal "
-                + "from tiket_bioskop "
-                + "right join film_bioskop on tiket_bioskop.kode_film=film_bioskop.kode_film "
+                + "from (select tiket.kode_film, film.judul_film, "
+                + "count(tiket.kode_film) as total, tiket.tanggal "
+                + "from tiket "
+                + "right join film on tiket.kode_film=film.kode_film "
                 + "where tanggal=\'" + tanggal + "\' "
-                + "group by tiket_bioskop.kode_film, "
-                + "film_bioskop.judul_film,"
-                + "tiket_bioskop.tanggal)";
+                + "group by tiket.kode_film, "
+                + "film.judul_film,"
+                + "tiket.tanggal)";
 
-        return jdbcTemplate.queryForInt(sql);
+        return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 }

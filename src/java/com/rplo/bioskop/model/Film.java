@@ -30,6 +30,7 @@ public class Film {
     private String mStatus;
     private String mKategori;
     private String mGambar;
+    private static JdbcTemplate jdbcTemplate = new JdbcTemplate(DatabaseConnection.getmDataSource());
 
     public Film() {
     }
@@ -92,10 +93,10 @@ public class Film {
     
     public static void simpanData(Film pFilm)
     {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        String sql = "INSERT INTO film_bioskop VALUES(?, ?, ?, ?, ? ,?)";
+        String sql = "INSERT INTO film VALUES(?, ?, ?, ?, ? ,?)";
 
         jdbcTemplate.update(sql,
                 new Object[]{
@@ -110,24 +111,24 @@ public class Film {
     }
     
     public static List<Film> getDataList() {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
         List<Film> filmList = new ArrayList<Film>();
 
-        String sql = "SELECT * FROM film_bioskop";
+        String sql = "SELECT * FROM film";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         filmList = jdbcTemplate.query(sql, new FilmRowMapper());
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
         return filmList;
     }
 
     public static List<Film> getDataListbyKode(String kode) {
-        DataSource dataSource = DatabaseConnection.getmDataSource();
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
         List<Film> filmList = new ArrayList<Film>();
 
-        String sql = "SELECT * FROM film_bioskop WHERE kode_film = '" + kode + "'";
+        String sql = "SELECT * FROM film WHERE kode_film = '" + kode + "'";
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         filmList = jdbcTemplate.query(sql, new FilmRowMapper());
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
         return filmList;
