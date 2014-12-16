@@ -186,7 +186,7 @@
                 $('.ui.dropdown').dropdown({on: 'hover'});
                 
                 //Datepicker format
-                $("#datePicker").datepick({dateFormat: 'dd-mm-yyyy'});
+                $("#datePicker").datepick({dateFormat: 'dd-M-yyyy'});
                 
                 //Save form error prompt 
                 $("#saveMember").form({

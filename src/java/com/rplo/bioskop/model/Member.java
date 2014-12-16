@@ -126,6 +126,11 @@ public class Member {
     public void setmPasswordMember(String mPasswordMember) {
         this.mPasswordMember = mPasswordMember;
     }
+    
+    public static String getGeneratedKodeMember() {
+        String sql = "SELECT 'M' || TO_CHAR(COUNT(KODE_MEMBER)+1, 'FM09999') FROM MEMBER";
+        return jdbcTemplate.queryForObject(sql, String.class);
+    }
 
     /**
      * Memvalidasi login user, akan mengembalikan nilai int sesuai dengan hasil
@@ -170,16 +175,16 @@ public class Member {
 
         jdbcTemplate.update(sql,
                 new Object[]{
-                    pMember.getmKodeMember(),
+                    getGeneratedKodeMember(),
                     pMember.getmUsernameMember(),
                     pMember.getmPasswordMember(),
                     pMember.getmNamaMember(),
-                    pMember.getmTanggalLahir(),
+                    pMember.getmTanggalLahir().toUpperCase(),
                     pMember.getmAlamatMember(),
                     pMember.getmEmail(),
                     pMember.getmNomorTelepon(),
-                    pMember.getmSaldo(),
                     pMember.getmTempatLahir(),
+                    pMember.getmSaldo(),
                     pMember.getmGender()
                 });
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
