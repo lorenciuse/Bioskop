@@ -91,6 +91,13 @@ public class Film {
         this.mGambar = mGambar;
     }
     
+    public static String getGeneratedKodeFilm() {
+        String sql = "SELECT 'F' || TO_CHAR(COUNT(KODE_FILM)+1, 'FM09999') FROM FILM";
+        try {
+        return jdbcTemplate.queryForObject(sql, String.class); }
+        catch(Exception e) { return "F00001"; }
+    }
+    
     public static void simpanData(Film pFilm)
     {
         //DataSource dataSource = DatabaseConnection.getmDataSource();
@@ -100,7 +107,7 @@ public class Film {
 
         jdbcTemplate.update(sql,
                 new Object[]{
-                    pFilm.getmKodeFilm(),
+                    getGeneratedKodeFilm(),
                     pFilm.getmJudulFilm(),
                     pFilm.getmDurasi(),
                     pFilm.getmGenre(),
@@ -121,6 +128,18 @@ public class Film {
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
         return filmList;
     }
+    
+    public static List<Film> getDataListNowPlaying() {
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
+        List<Film> filmList = new ArrayList<Film>();
+
+        String sql = "SELECT * FROM film WHERE status_film = 'Now Playing'";
+
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        filmList = jdbcTemplate.query(sql, new FilmRowMapper());
+        JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
+        return filmList;
+    }
 
     public static List<Film> getDataListbyKode(String kode) {
         //DataSource dataSource = DatabaseConnection.getmDataSource();
@@ -133,6 +152,16 @@ public class Film {
         JdbcUtils.closeConnection(DatabaseConnection.getmConnection());
         return filmList;
     }
+    
+    public static String getJudul(String kode) {
+        //DataSource dataSource = DatabaseConnection.getmDataSource();
+
+        String sql = "SELECT judul_film FROM film WHERE kode_film = '" + kode + "'";
+
+        //JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        return jdbcTemplate.queryForObject(sql, String.class);
+        
+    }
 
     public static class FilmRowMapper implements RowMapper<Film> {
 
@@ -141,7 +170,6 @@ public class Film {
             FilmExtractor filmExtractor = new FilmExtractor();
             return filmExtractor.extractData(rs);
         }
-
     }
 
     public static class FilmExtractor implements ResultSetExtractor<Film> {

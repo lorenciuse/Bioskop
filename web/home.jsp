@@ -26,14 +26,14 @@
                     break;
                 case 2:
                     session.setAttribute("role", "Operator");
-                    session.setAttribute("name", DataPegawai.getDataListByUsername(request.getParameter("username")).get(0).getmNamaPegawai());
-                    session.setAttribute("username", DataPegawai.getDataListByUsername(request.getParameter("username")).get(0).getmUsernamePegawai());
+                    session.setAttribute("name", DataPegawai.getDataListByUsername(request.getParameter("username").toUpperCase()).get(0).getmNamaPegawai());
+                    session.setAttribute("username", DataPegawai.getDataListByUsername(request.getParameter("username").toUpperCase()).get(0).getmUsernamePegawai());
                     response.sendRedirect("halaman-utama-operator.jsp");
                     break;
                 case 3:
                     session.setAttribute("role", "Admin");
-                    session.setAttribute("name", DataPegawai.getDataListByUsername(request.getParameter("username")).get(0).getmNamaPegawai());
-                    session.setAttribute("username", DataPegawai.getDataListByUsername(request.getParameter("username")).get(0).getmUsernamePegawai());
+                    session.setAttribute("name", DataPegawai.getDataListByUsername(request.getParameter("username").toUpperCase()).get(0).getmNamaPegawai());
+                    session.setAttribute("username", DataPegawai.getDataListByUsername(request.getParameter("username").toUpperCase()).get(0).getmUsernamePegawai());
                     response.sendRedirect("halaman-utama-admin.jsp");
                     break;
                 default:

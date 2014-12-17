@@ -66,7 +66,7 @@
             <div class="ui basic segment attached">
                 <div class="ui six doubling cards">
                     <%
-                        List<Film> film = Film.getDataList();
+                        List<Film> film = Film.getDataListNowPlaying();
                         for (int i = 0; i < film.size(); i++) {
                             String judul = film.get(i).getmJudulFilm();
                     %>
@@ -108,7 +108,8 @@
                     <div class="description">
                         <div class="two fields">
                             <div class="field">
-                                Sinopsis
+                                Sinopsis<br>
+                                <%= film.get(i).getmKodeFilm() %>
                             </div>
                         </div>
                     </div>

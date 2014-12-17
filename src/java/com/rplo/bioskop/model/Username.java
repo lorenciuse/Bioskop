@@ -19,7 +19,7 @@ public class Username {
         DatabaseConnection db = new DatabaseConnection();
         Member member = new Member();
         
-        System.out.println(Tiket.sumTiket("13-Dec-14"));
+//        System.out.println(Tiket.sumTiket("13-Dec-14"));
 //        boolean exist = member.isUsernameExist("lorenciuse");
         
 //        System.out.println(exist);

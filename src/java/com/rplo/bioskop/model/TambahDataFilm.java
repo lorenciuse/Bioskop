@@ -63,7 +63,7 @@ public class TambahDataFilm extends HttpServlet {
 //            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "mhs125314109", "mhs125314109");
             con.setAutoCommit(false);
 
-            String sql = "INSERT INTO film_bioskop VALUES(?, ?, ?, ?, ?, ? ,?)";
+            String sql = "INSERT INTO film VALUES(?, ?, ?, ?, ?, ? ,?, ?)";
 
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, idfilm);
@@ -75,6 +75,7 @@ public class TambahDataFilm extends HttpServlet {
             // size must be converted to int otherwise it results in error
             ps.setBinaryStream(7, file.getInputStream(), (int) file.getSize());
 //            jdbcTemplate.update(sql, ps);
+            ps.setString(8, "SINOPSIS");
             ps.executeUpdate();
             con.commit();
             con.close();

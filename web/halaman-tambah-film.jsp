@@ -106,7 +106,6 @@
                         </thead>
                         <tbody>
                             <%
-                                DataSource dataSource = DatabaseConnection.getmDataSource();
                                 List<Film> film = Film.getDataList();
                                 for (int i = 0; i < film.size(); i++) {
                             %>

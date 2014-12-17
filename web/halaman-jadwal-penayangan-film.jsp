@@ -4,6 +4,9 @@
     Author     : Lorencius
 --%>
 
+<%@page import="com.rplo.bioskop.model.Film"%>
+<%@page import="java.util.List"%>
+<%@page import="com.rplo.bioskop.model.Jadwal"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -51,9 +54,9 @@
                                 <div class="default text">Studio</div>
                                 <i class="dropdown icon"></i>
                                 <div class="menu">
-                                    <div class="item" data-value="Studio1">Studio 1</div>
-                                    <div class="item" data-value="Studio2">Studio 2</div>
-                                    <div class="item" data-value="Studio3">Studio 3</div>
+                                    <div class="item" data-value="101">Studio 1</div>
+                                    <div class="item" data-value="102">Studio 2</div>
+                                    <div class="item" data-value="103">Studio 3</div>
                                 </div>
                             </div>
                         </div>
@@ -90,10 +93,12 @@
                                 <input type="hidden" name="judul">
                                 <div class="default text">Pilih Judul</div>
                                 <i class="dropdown icon"></i>
-                                <div class="disabled menu" id="menuJudul">
-                                    <div class="item" data-value="Judul1">Judul 1</div>
-                                    <div class="item" data-value="Judul2">Judul 2</div>
-                                    <div class="item" data-value="Judul3">Judul 3</div>
+                                <div class="menu" id="menuJudul">
+                                    <% List<Jadwal> jadwalList = Jadwal.getDataList();
+                                        for (int i = 0; i < jadwalList.size(); i++) {
+                                    %>
+                                    <div class="item" data-value="<%= jadwalList.get(i).getmKodeFilm() %>"><%= Film.getJudul(jadwalList.get(i).getmKodeFilm()) %></div>
+                                    <% }%>
                                 </div>
                             </div>
                         </div>

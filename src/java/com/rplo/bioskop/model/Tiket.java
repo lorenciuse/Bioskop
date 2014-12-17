@@ -115,19 +115,93 @@ public class Tiket {
 
     }
 
-    public static int sumTiket(String tanggal) {
+    public static int sumTiket_date(String tanggal_awal, String tanggal_akhir) {
         DataSource dataSource = DatabaseConnection.getmDataSource();
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        String sql = "select sum(total) "
-                + "from (select tiket.kode_film, film.judul_film, "
-                + "count(tiket.kode_film) as total, tiket.tanggal "
-                + "from tiket "
-                + "right join film on tiket.kode_film=film.kode_film "
-                + "where tanggal=\'" + tanggal + "\' "
-                + "group by tiket.kode_film, "
-                + "film.judul_film,"
-                + "tiket.tanggal)";
+        String sql = "select sum(jumlah) from (select t.kode_jadwal,f.kode_film, "
+                + "f.judul_film,j.jam_tayang,j.tanggal_tayang, count(t.kode_jadwal) as jumlah, "
+                + "sum(t.harga)as total"
+                + "from tiket_bioskop t join jadwal_film_bioskop j"
+                + "on t.kode_jadwal=j.kode_jadwal"
+                + "join film_bioskop f"
+                + "on j.kode_film=f.kode_film"
+                + "where tanggal between \'" + tanggal_awal + "\' and \'" + tanggal_akhir + "\'"
+                + "group by t.kode_jadwal,f.kode_film,f.judul_film,j.jam_tayang,j.tanggal_tayang)";
+        
+        sql = "select sum(jumlah) from (select t.kode_jadwal,f.kode_film, f.judul_film,j.jam_tayang,j.tanggal_tayang, count(t.kode_jadwal) as jumlah, sum(t.harga)as total \n"
+                + "from tiket_bioskop t join jadwal_film_bioskop j \n"
+                + "on t.kode_jadwal=j.kode_jadwal \n"
+                + "join film_bioskop f \n"
+                + "on j.kode_film=f.kode_film \n"
+                + "where tanggal between \'" + tanggal_awal + "\' and \'" + tanggal_akhir + "\' \n"
+                + "group by t.kode_jadwal,f.kode_film,f.judul_film,j.jam_tayang,j.tanggal_tayang)";
+
+        System.out.println(sql);
+
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+//        return jdbcTemplate.queryForInt(sql);
+    }
+
+    public static int sumharga_date(String tanggal_awal, String tanggal_akhir) {
+        DataSource dataSource = DatabaseConnection.getmDataSource();
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        String sql = "select sum(total) from (select t.kode_jadwal,f.kode_film, "
+                + "f.judul_film,j.jam_tayang,j.tanggal_tayang, count(t.kode_jadwal) as jumlah, "
+                + "sum(t.harga)as total"
+                + "from tiket_bioskop t join jadwal_film_bioskop j"
+                + "on t.kode_jadwal=j.kode_jadwal"
+                + "join film_bioskop f"
+                + "on j.kode_film=f.kode_film"
+                + "where tanggal between \'" + tanggal_awal + "\' and \'" + tanggal_akhir + "\'"
+                + "group by t.kode_jadwal,f.kode_film,f.judul_film,j.jam_tayang,j.tanggal_tayang)";
+
+        sql = "select sum(total) from (select t.kode_jadwal,f.kode_film, f.judul_film,j.jam_tayang,j.tanggal_tayang, count(t.kode_jadwal) as jumlah, sum(t.harga)as total \n"
+                + "from tiket_bioskop t join jadwal_film_bioskop j \n"
+                + "on t.kode_jadwal=j.kode_jadwal \n"
+                + "join film_bioskop f \n"
+                + "on j.kode_film=f.kode_film \n"
+                + "where tanggal between \'" + tanggal_awal + "\' and \'" + tanggal_akhir + "\' \n"
+                + "group by t.kode_jadwal,f.kode_film,f.judul_film,j.jam_tayang,j.tanggal_tayang)";
+
+        System.out.println(sql);
+
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+//        return jdbcTemplate.queryForInt(sql);
+    }
+
+    public static int sumtiket_sysdate() {
+        DataSource dataSource = DatabaseConnection.getmDataSource();
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        String sql = "select sum(jumlah) from (select t.kode_jadwal,f.kode_film, "
+                + "f.judul_film,j.jam_tayang,j.tanggal_tayang, count(t.kode_jadwal) as jumlah, "
+                + "sum(t.harga)as total"
+                + "from tiket_bioskop t join jadwal_film_bioskop j"
+                + "on t.kode_jadwal=j.kode_jadwal"
+                + "join film_bioskop f"
+                + "on j.kode_film=f.kode_film"
+                + "where tanggal like sysdate"
+                + "group by t.kode_jadwal,f.kode_film,f.judul_film,j.jam_tayang,j.tanggal_tayang)";
+        
+
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    public static int sumharga_sysdate() {
+        DataSource dataSource = DatabaseConnection.getmDataSource();
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        String sql = "select sum(total) from (select t.kode_jadwal,f.kode_film, "
+                + "f.judul_film,j.jam_tayang,j.tanggal_tayang, count(t.kode_jadwal) as jumlah, "
+                + "sum(t.harga)as total"
+                + "from tiket_bioskop t join jadwal_film_bioskop j"
+                + "on t.kode_jadwal=j.kode_jadwal"
+                + "join film_bioskop f"
+                + "on j.kode_film=f.kode_film"
+                + "where tanggal like sysdate"
+                + "group by t.kode_jadwal,f.kode_film,f.judul_film,j.jam_tayang,j.tanggal_tayang)";
 
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
